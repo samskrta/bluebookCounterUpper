@@ -74,6 +74,13 @@ git tag v1.0.0 && git push origin v1.0.0
 
 - The workflow will attach the exe to the new GitHub Release.
 
+### Download prebuilt apps (for non‑technical users)
+
+- Go to the repo’s Releases page and download:
+  - `BlueBook-Counter-Upper-macOS.zip` for macOS
+  - `BlueBook Counter Upper.exe` for Windows
+- On macOS, unzip and drag the app to Applications, right‑click → Open on first run.
+
 
 
 
