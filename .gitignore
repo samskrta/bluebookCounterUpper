@@ -23,8 +23,6 @@ dist/
 .pytest_cache/
 .mypy_cache/
 .coverage
-
-
-
-data/*.xlsx
-data/*_counts.csv
+ 
+# Sensitive reports
+data/
