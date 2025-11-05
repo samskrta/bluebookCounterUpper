@@ -6,6 +6,53 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Build exe with PyInstaller
+        run: |
+          python -m PyInstaller --onefile --windowed --name "BlueBook Counter Upper" bluebook_count.py
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: BlueBook-Counter-Upper-windows
+          path: dist/BlueBook Counter Upper.exe
+
+      - name: Upload release asset
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/BlueBook Counter Upper.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+name: Build Windows exe
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
 jobs:
   build-windows:
     runs-on: windows-latest
