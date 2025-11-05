@@ -1,6 +1,8 @@
 ## Blue Book Counter Upper
 
 Counts unique Blue Book quotes per technician from the Excel export.
+Also flags rows whose Labor was manually modified (detected via cell comments)
+and summarizes whether changes trend up/down per technician.
 Requires download of Blue Book report from https://account.mypartshelp.com/company
 
 ### Setup
@@ -15,11 +17,26 @@ pip3 install -r requirements.txt
 python3 bluebook_count.py --file data/BlueBook_Report_10_01_2025.xlsx --sheet ALL
 ```
 
-Output is CSV to stdout with a TOTAL row. Optionally write a CSV file:
+Output is CSV to stdout with a TOTAL row. Optionally write a counts CSV file:
 
 ```bash
 python3 bluebook_count.py --file data/BlueBook_Report_10_01_2025.xlsx --csv out/bluebook_counts.csv
 ```
+
+Additionally, write per-line modification flags and a per-tech summary:
+
+```bash
+python3 bluebook_count.py \
+  --file data/BlueBook_Report_10_01_2025.xlsx \
+  --mods-csv out/bluebook_mods.csv \
+  --mods-summary-csv out/bluebook_mods_summary.csv
+```
+
+Notes:
+- Labor changes are identified by the presence of a comment on the Labor cell.
+- Direction (up/down/even) is inferred from amounts mentioned in the comment
+  (e.g., "from $149 to $179"), or compared to the Labor cell value when only
+  one amount is present. If not inferable, direction is marked "unknown".
 
 ### Distribute to non-technical users (macOS)
 
